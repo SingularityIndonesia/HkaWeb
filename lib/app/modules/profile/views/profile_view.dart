@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hika_biofarma/provider/theme_provider.dart';
 import 'package:hika_biofarma/widget/footer_widget.dart';
-import 'package:hika_biofarma/widget/pengurus_card_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -10,7 +11,10 @@ class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
+      backgroundColor: appProvider.isDark ? Colors.grey[900] : Colors.white,
       body: SafeArea(
         child: ListView(
           shrinkWrap: true,
@@ -42,8 +46,6 @@ class ProfileView extends GetView<ProfileController> {
             const BaganOrganisasiSection(),
             const SizedBox(height: 39),
             const PengurusHikaSection(),
-            const SizedBox(height: 39),
-            const KembaliSection(),
             const SizedBox(height: 55),
             const FooterWidget()
           ],
@@ -71,6 +73,8 @@ class VisiSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
@@ -92,6 +96,7 @@ class VisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -102,6 +107,7 @@ class VisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -112,6 +118,7 @@ class VisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -126,6 +133,8 @@ class MisiSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
@@ -147,6 +156,7 @@ class MisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -157,6 +167,7 @@ class MisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -167,6 +178,7 @@ class MisiSection extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 12,
               height: 1.5,
+              color: appProvider.isDark ? Colors.white : Colors.grey[900],
             ),
             textAlign: TextAlign.justify,
           ),
@@ -181,6 +193,8 @@ class DetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -192,6 +206,7 @@ class DetailSection extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
               TextSpan(
@@ -216,6 +231,8 @@ class TotalAggotaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Row(
@@ -228,6 +245,7 @@ class TotalAggotaSection extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
                   fontSize: 28,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
               Text(
@@ -235,6 +253,7 @@ class TotalAggotaSection extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   fontSize: 11,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               )
             ],
@@ -299,6 +318,7 @@ class PengurusHikaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -312,6 +332,7 @@ class PengurusHikaSection extends StatelessWidget {
                   style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w400,
                     fontSize: 22,
+                    color: appProvider.isDark ? Colors.white : Colors.grey[900],
                   ),
                 ),
                 TextSpan(
@@ -328,58 +349,30 @@ class PengurusHikaSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15),
-        const SingleChildScrollView(
+        SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.only(left: 30),
           child: Row(
             children: [
-              PengurusCardWidget(
-                image: 'assets/images/pengurus_sekretaris_image.png',
-                title: 'Sekretaris',
+              Image.asset(
+                appProvider.isDark
+                    ? 'assets/images/pengurus/sekretaris_black.png'
+                    : 'assets/images/pengurus/sekretaris_white.png',
               ),
-              PengurusCardWidget(
-                image: 'assets/images/pengurus_ketua_umum_image.png',
-                title: 'Ketua Umum',
+              Image.asset(
+                appProvider.isDark
+                    ? 'assets/images/pengurus/ketua_umum_black.png'
+                    : 'assets/images/pengurus/ketua_umum_white.png',
               ),
-              PengurusCardWidget(
-                image: 'assets/images/pengurus_wakil_ketua_image.png',
-                title: 'Wakil Ketua',
-              ),
+              Image.asset(
+                appProvider.isDark
+                    ? 'assets/images/pengurus/wakil_ketua_black.png'
+                    : 'assets/images/pengurus/wakil_ketua_white.png',
+              )
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class KembaliSection extends StatelessWidget {
-  const KembaliSection({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 26,
-        width: 124,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: const Color(0XFFEF8318),
-        ),
-        child: GestureDetector(
-          onTap: () => Get.back(),
-          child: Center(
-            child: Text(
-              'Kembali',
-              style: GoogleFonts.roboto(
-                fontSize: 12,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

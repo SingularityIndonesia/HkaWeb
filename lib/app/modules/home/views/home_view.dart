@@ -1,19 +1,20 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hika_biofarma/app/modules/berita_hika/views/berita_hika_detail_view.dart';
 import 'package:hika_biofarma/app/modules/berita_hika/views/berita_hika_view.dart';
+import 'package:hika_biofarma/app/modules/info_sosial/views/info_sosial_detail_view.dart';
 import 'package:hika_biofarma/app/modules/info_sosial/views/info_sosial_view.dart';
 import 'package:hika_biofarma/app/modules/register/views/register_view.dart';
 import 'package:hika_biofarma/app/routes/app_pages.dart';
-import 'package:hika_biofarma/utils/theme.dart';
+import 'package:hika_biofarma/provider/theme_provider.dart';
 import 'package:hika_biofarma/widget/footer_widget.dart';
 import 'package:hika_biofarma/widget/header_widget.dart';
-import 'package:hika_biofarma/widget/pengurus_card_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -21,16 +22,26 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
+      backgroundColor: appProvider.isDark ? Colors.grey[900] : Colors.white,
       appBar: AppBar(
+        backgroundColor: appProvider.isDark ? Colors.grey[900] : Colors.white,
         elevation: 0,
         title: Image.asset('assets/images/hika_logo.png'),
         actions: [
-          const Icon(Icons.account_circle),
+          Icon(
+            Icons.account_circle,
+            color: appProvider.isDark ? Colors.white : Colors.grey[900],
+          ),
           const SizedBox(width: 5),
           Builder(builder: (ctx) {
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: Icon(
+                Icons.menu,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
               onPressed: () {
                 Scaffold.of(ctx).openEndDrawer();
               },
@@ -40,6 +51,7 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       endDrawer: Drawer(
+        backgroundColor: appProvider.isDark ? Colors.grey[900] : Colors.white,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -49,11 +61,15 @@ class HomeView extends GetView<HomeController> {
               title: Text(
                 'Home',
                 style: GoogleFonts.roboto(
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              leading: const Icon(Icons.home_work),
+              leading: Icon(
+                Icons.home_work,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
               onTap: () {},
             ),
             ListTile(
@@ -63,9 +79,13 @@ class HomeView extends GetView<HomeController> {
                 style: GoogleFonts.roboto(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
-              leading: const Icon(Icons.person_2),
+              leading: Icon(
+                Icons.person_2,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
               onTap: () {
                 Get.toNamed(Routes.PROFILE);
               },
@@ -77,12 +97,14 @@ class HomeView extends GetView<HomeController> {
                 style: GoogleFonts.roboto(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
-              leading: const Icon(Icons.lightbulb_circle),
-              onTap: () {
-                Get.toNamed(Routes.PENGURUS);
-              },
+              leading: Icon(
+                Icons.lightbulb_circle,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
+              onTap: () {},
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 30),
@@ -91,38 +113,38 @@ class HomeView extends GetView<HomeController> {
                 style: GoogleFonts.roboto(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
-              leading: const Icon(Icons.article),
-              onTap: () {},
+              leading: Icon(
+                Icons.article,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
+              onTap: () {
+                Get.toNamed(Routes.PENGURUS);
+              },
             ),
-            ObxValue(
-              (data) => SwitchListTile(
-                value: controller.isLightTheme.value,
-                onChanged: (val) {
-                  controller.isLightTheme.value = val;
-
-                  Get.changeTheme(
-                    controller.isLightTheme.value
-                        ? ThemeList.darkTheme
-                        : ThemeList.lightTheme,
-                  );
-                  controller.saveThemeStatus();
-                },
-                contentPadding: const EdgeInsets.symmetric(horizontal: 30),
-                title: Text(
-                  'Dark Mode',
-                  style: GoogleFonts.roboto(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+            SwitchListTile(
+              value: appProvider.isDark,
+              onChanged: (val) {
+                appProvider.setTheme(val ? ThemeMode.dark : ThemeMode.light);
+              },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+              title: Text(
+                'Dark Mode',
+                style: GoogleFonts.roboto(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
-                thumbColor: MaterialStateProperty.all(
-                  const Color(0XFF55A9B6),
-                ),
-                secondary: const Icon(Icons.dark_mode),
               ),
-              false.obs,
+              thumbColor: MaterialStateProperty.all(
+                const Color(0XFF55A9B6),
+              ),
+              secondary: Icon(
+                Icons.dark_mode,
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
+              ),
             ),
             Visibility(
               visible: kIsWeb != true,
@@ -139,9 +161,17 @@ class HomeView extends GetView<HomeController> {
                         style: GoogleFonts.roboto(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
+                          color: appProvider.isDark
+                              ? Colors.white
+                              : Colors.grey[900],
                         ),
                       ),
-                      leading: const Icon(Icons.exit_to_app),
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: appProvider.isDark
+                            ? Colors.white
+                            : Colors.grey[900],
+                      ),
                       onTap: () => SystemNavigator.pop(),
                     ),
                   ),
@@ -192,6 +222,8 @@ class WelcomeTextSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Center(
       child: Text.rich(
         TextSpan(
@@ -209,6 +241,7 @@ class WelcomeTextSection extends StatelessWidget {
             TextSpan(
               text: ' HIKA BF sekarang juga. ',
               style: GoogleFonts.roboto(
+                color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),
@@ -327,6 +360,8 @@ class SubHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -339,6 +374,7 @@ class SubHeaderSection extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
+                  color: appProvider.isDark ? Colors.white : Colors.grey[900],
                 ),
               ),
               TextSpan(
@@ -366,6 +402,8 @@ class InfoSosialSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -373,6 +411,7 @@ class InfoSosialSection extends StatelessWidget {
           title: 'Info ',
           subtitle: 'Sosial. ',
           onTap: () => Get.to(const InfoSosialView()),
+          isShowDetail: true,
         ),
         const SizedBox(height: 20),
         SingleChildScrollView(
@@ -388,48 +427,56 @@ class InfoSosialSection extends StatelessWidget {
                       right: index == controller.infoSosialList.length - 1
                           ? 0
                           : 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        infoSosial.image,
-                        width: 200,
-                        height: 180,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        infoSosial.date,
-                        style: GoogleFonts.roboto(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                  child: MaterialButton(
+                    onPressed: () => Get.to(
+                      InfoSosialDetailView(data: infoSosial),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          infoSosial.image,
+                          width: 200,
+                          height: 180,
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          infoSosial.title,
+                        const SizedBox(height: 8),
+                        Text(
+                          infoSosial.date,
                           style: GoogleFonts.roboto(
-                            fontSize: 22,
-                            color: const Color(0XFF55A9B6),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          infoSosial.description,
-                          style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            color: const Color(0XFF5E5E5E),
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: appProvider.isDark
+                                ? Colors.white
+                                : Colors.grey[900],
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            infoSosial.title,
+                            style: GoogleFonts.roboto(
+                              fontSize: 22,
+                              color: const Color(0XFF55A9B6),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            infoSosial.description,
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color(0XFF5E5E5E),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -447,7 +494,9 @@ class BeritaHikaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
     final controller = Get.put(HomeController());
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -455,6 +504,7 @@ class BeritaHikaSection extends StatelessWidget {
           title: 'Berita ',
           subtitle: 'hika. ',
           onTap: () => Get.to(const BeritaHikaView()),
+          isShowDetail: true,
         ),
         const SizedBox(height: 20),
         SingleChildScrollView(
@@ -470,44 +520,52 @@ class BeritaHikaSection extends StatelessWidget {
                       right: index == controller.beritaHikaList.length - 1
                           ? 0
                           : 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        infoSosial.image,
-                        width: 200,
-                        height: 180,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        infoSosial.date,
-                        style: GoogleFonts.roboto(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                  child: MaterialButton(
+                    onPressed: () => Get.to(
+                      BeritaHikaDetailView(data: infoSosial),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          infoSosial.image,
+                          width: 200,
+                          height: 180,
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        infoSosial.title,
-                        style: GoogleFonts.roboto(
-                          fontSize: 22,
-                          color: const Color(0XFF55A9B6),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          infoSosial.description,
+                        const SizedBox(height: 8),
+                        Text(
+                          infoSosial.date,
                           style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            color: const Color(0XFF5E5E5E),
+                            color: appProvider.isDark
+                                ? Colors.white
+                                : Colors.grey[900],
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        Text(
+                          infoSosial.title,
+                          style: GoogleFonts.roboto(
+                            fontSize: 22,
+                            color: const Color(0XFF55A9B6),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            infoSosial.description,
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color(0XFF5E5E5E),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -525,6 +583,8 @@ class PengurusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<ThemeProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -541,23 +601,26 @@ class PengurusSection extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 150,
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(10, 50, 4, 0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 50, 4, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  PengurusCardWidget(
-                    image: 'assets/images/pengurus_sekretaris_image.png',
-                    title: 'Sekretaris',
+                  Image.asset(
+                    appProvider.isDark
+                        ? 'assets/images/pengurus/sekretaris_black.png'
+                        : 'assets/images/pengurus/sekretaris_white.png',
                   ),
-                  PengurusCardWidget(
-                    image: 'assets/images/pengurus_ketua_umum_image.png',
-                    title: 'Ketua Umum',
+                  Image.asset(
+                    appProvider.isDark
+                        ? 'assets/images/pengurus/ketua_umum_black.png'
+                        : 'assets/images/pengurus/ketua_umum_white.png',
                   ),
-                  PengurusCardWidget(
-                    image: 'assets/images/pengurus_wakil_ketua_image.png',
-                    title: 'Wakil Ketua',
-                  ),
+                  Image.asset(
+                    appProvider.isDark
+                        ? 'assets/images/pengurus/wakil_ketua_black.png'
+                        : 'assets/images/pengurus/wakil_ketua_white.png',
+                  )
                 ],
               ),
             )
