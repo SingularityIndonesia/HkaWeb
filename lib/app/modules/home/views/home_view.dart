@@ -132,7 +132,8 @@ class HomeView extends GetView<HomeController> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 30),
                       title: Text(
                         'Keluar Aplikasi',
                         style: GoogleFonts.roboto(
@@ -391,7 +392,12 @@ class InfoSosialSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(infoSosial.image),
+                      Image.asset(
+                        infoSosial.image,
+                        width: 200,
+                        height: 180,
+                        fit: BoxFit.fitWidth,
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         infoSosial.date,
@@ -468,7 +474,12 @@ class BeritaHikaSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(infoSosial.image),
+                      Image.asset(
+                        infoSosial.image,
+                        width: 200,
+                        height: 180,
+                        fit: BoxFit.fitWidth,
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         infoSosial.date,
